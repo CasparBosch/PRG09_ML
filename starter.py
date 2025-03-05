@@ -23,7 +23,7 @@ def extract_from_json_as_np_array(key, json_data):
 
     return np.array(data_as_array)
 
-STUDENTNUMMER = "1014698"
+STUDENTNUMMER = "1004288"
 
 assert STUDENTNUMMER != "1234567", "Verander 1234567 in je eigen studentnummer"
 
@@ -52,10 +52,10 @@ for i in range(len(x)):
 plt.axis([min(x), max(x), min(y), max(y)])
 plt.show()
 
-# print deze punten uit en omcirkel de mogelijke clusters
-# kijk ../img/clusters.png
+# TODO: print deze punten uit en omcirkel de mogelijke clusters
+# Zie ../Figure_1.png
 
-# ontdek de clusters mbv kmeans en teken een plot met kleurtjes
+# TODO: ontdek de clusters mbv kmeans en teken een plot met kleurtjes
 km = KMeans(n_clusters=3, random_state=0, n_init="auto").fit(X)
 
 color_theme = np.array(['gray', 'yellow', 'blue'])
@@ -88,21 +88,21 @@ for i in range(len(X_data)):
 plt.title("Classification")
 plt.show()
 
-# leer de classificaties
+# TODO: leer de classificaties
 lr = LogisticRegression()
 lr.fit(X_data, Y_data)
 
 dt = tree.DecisionTreeClassifier(max_depth=3)
 dt = dt.fit(X_data, Y_data)
 
-# voorspel na het trainen de Y-waarden (je gebruikt hiervoor dus niet meer de
-# echte Y-waarden, maar enkel de X en je getrainde classifier) en noem deze
-# bijvoordeeld Y_predict
+# TODO: voorspel na het trainen de Y-waarden (je gebruikt hiervoor dus niet meer de
+#       echte Y-waarden, maar enkel de X en je getrainde classifier) en noem deze
+#       bijvoordeeld Y_predict
 
 Y_pred = lr.predict(X_data)
 tree_pred = dt.predict(X_data)
 
-# vergelijk Y_predict met de echte Y om te zien hoe goed je getraind hebt
+# TODO:vergelijk Y_predict met de echte Y om te zien hoe goed je getraind hebt
 acc_class = accuracy_score(Y_data, Y_pred)
 acc_tree = accuracy_score(Y_data, tree_pred)
 
@@ -117,18 +117,19 @@ classification_test = data.classification_test()
 # testen doen we 'geblinddoekt' je krijgt nu de Y's niet
 X_test = extract_from_json_as_np_array("x", classification_test)
 
-# voorspel na nog een keer de Y-waarden, en plaats die in de variabele Z
-# je kunt nu zelf niet testen hoe goed je het gedaan hebt omdat je nu
-# geen echte Y-waarden gekregen hebt.
-# onderstaande code stuurt je voorspelling naar de server, die je dan
-# vertelt hoeveel er goed waren.
+# TODO: voorspel na nog een keer de Y-waarden, en plaats die in de variabele Z
+#       je kunt nu zelf niet testen hoe goed je het gedaan hebt omdat je nu
+#       geen echte Y-waarden gekregen hebt.
+#       onderstaande code stuurt je voorspelling naar de server, die je dan
+#       vertelt hoeveel er goed waren.
+
+# Z = np.zeros(100) # dit is een gok dat alles 0 is... kan je zelf voorspellen hoeveel procent er goed is?
 
 Z = dt.predict(X_test)
 ZZ = lr.predict(X_test)
 
 # stuur je voorspelling naar de server om te kijken hoe goed je het gedaan hebt
-# tolist zorgt ervoor dat het numpy object uit de predict omgezet wordt naar een 'normale' lijst van 1'en en 0'en
-classification_test = data.classification_test(Z.tolist())
+classification_test = data.classification_test(Z.tolist()) # tolist zorgt ervoor dat het numpy object uit de predict omgezet wordt naar een 'normale' lijst van 1'en en 0'en
 print("Classificatie accuratie dec tree (test): " + str(classification_test))
 
 classification_test = data.classification_test(ZZ.tolist())

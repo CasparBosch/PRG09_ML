@@ -1,7 +1,7 @@
 import datetime
 import json
 import urllib.request
-
+import ssl
 
 NOCACHE = False
 
@@ -29,7 +29,10 @@ class Machine_Learning_Data():
                 req = urllib.request.Request(url)
                 req.add_header('Accept', 'application/json')
 
-                response = urllib.request.urlopen(req)
+                # Create an unverified SSL context
+                context = ssl._create_unverified_context()
+
+                response = urllib.request.urlopen(req, context=context)
 
                 # TODO: foutafhandeling
                 data = json.loads(response.read().decode('utf8'))
@@ -49,7 +52,7 @@ class Machine_Learning_Data():
 
         def classification_test(self, y=None):
                 if y == None:
-                        date_string = '{0:%Y-%m-%d}'.format(datetime.datetime.now())  # elke daga andere test-data
+                        date_string = '{0:%Y-%m-%d}'.format(datetime.datetime.now())  # elke dag andere test-data
                         return self.get_data(SERVER_URL + self.studentnummer + "/classification/test", self.studentnummer + "-" + date_string + "-classification-test")
                 else:
                     assert type(y) is list, "Stuur de classificaties als lijst"
@@ -61,7 +64,10 @@ class Machine_Learning_Data():
                                                  data=data_y.encode('utf8'))
                     req.add_header('Content-Type', 'application/json')
 
-                    response = urllib.request.urlopen(req)
+                    # Create an unverified SSL context
+                    context = ssl._create_unverified_context()
+
+                    response = urllib.request.urlopen(req, context=context)
 
                     # print(response)
 
